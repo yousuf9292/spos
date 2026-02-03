@@ -1,0 +1,666 @@
+#
+# TABLE STRUCTURE FOR: tec_categories
+#
+
+DROP TABLE IF EXISTS `tec_categories`;
+
+CREATE TABLE `tec_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(20) NOT NULL,
+  `name` varchar(55) NOT NULL,
+  `image` varchar(100) DEFAULT 'no_image.png',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_categories` (`id`, `code`, `name`, `image`) VALUES (1, 'G01', 'General', 'no_image.png');
+INSERT INTO `tec_categories` (`id`, `code`, `name`, `image`) VALUES (2, '1100', 'computer', 'no_image.png');
+
+
+#
+# TABLE STRUCTURE FOR: tec_combo_items
+#
+
+DROP TABLE IF EXISTS `tec_combo_items`;
+
+CREATE TABLE `tec_combo_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `item_code` varchar(20) NOT NULL,
+  `quantity` decimal(12,4) NOT NULL,
+  `price` decimal(25,4) DEFAULT NULL,
+  `cost` decimal(25,4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_customers
+#
+
+DROP TABLE IF EXISTS `tec_customers`;
+
+CREATE TABLE `tec_customers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(55) NOT NULL,
+  `cf1` varchar(255) NOT NULL,
+  `cf2` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `store_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_customers` (`id`, `name`, `cf1`, `cf2`, `phone`, `email`, `store_id`) VALUES (1, 'Walk-in Client', '', '', '012345678', 'customer@tecdiary.com', NULL);
+
+
+#
+# TABLE STRUCTURE FOR: tec_expenses
+#
+
+DROP TABLE IF EXISTS `tec_expenses`;
+
+CREATE TABLE `tec_expenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `reference` varchar(50) NOT NULL,
+  `amount` decimal(25,4) NOT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `created_by` varchar(55) NOT NULL,
+  `attachment` varchar(55) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_gift_cards
+#
+
+DROP TABLE IF EXISTS `tec_gift_cards`;
+
+CREATE TABLE `tec_gift_cards` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `card_no` varchar(20) NOT NULL,
+  `value` decimal(25,4) NOT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `balance` decimal(25,4) NOT NULL,
+  `expiry` date DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `store_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `card_no` (`card_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_groups
+#
+
+DROP TABLE IF EXISTS `tec_groups`;
+
+CREATE TABLE `tec_groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `description` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_groups` (`id`, `name`, `description`) VALUES (1, 'admin', 'Administrator');
+INSERT INTO `tec_groups` (`id`, `name`, `description`) VALUES (2, 'staff', 'Staff');
+
+
+#
+# TABLE STRUCTURE FOR: tec_login_attempts
+#
+
+DROP TABLE IF EXISTS `tec_login_attempts`;
+
+CREATE TABLE `tec_login_attempts` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `ip_address` varbinary(16) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_login_attempts` (`id`, `ip_address`, `login`, `time`) VALUES (4, '::1', 'owner@tecdiary.com', 1680633309);
+
+
+#
+# TABLE STRUCTURE FOR: tec_payments
+#
+
+DROP TABLE IF EXISTS `tec_payments`;
+
+CREATE TABLE `tec_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NULL DEFAULT current_timestamp(),
+  `sale_id` int(11) DEFAULT NULL,
+  `customer_id` int(11) DEFAULT NULL,
+  `transaction_id` varchar(50) DEFAULT NULL,
+  `paid_by` varchar(20) NOT NULL,
+  `cheque_no` varchar(20) DEFAULT NULL,
+  `cc_no` varchar(20) DEFAULT NULL,
+  `cc_holder` varchar(25) DEFAULT NULL,
+  `cc_month` varchar(2) DEFAULT NULL,
+  `cc_year` varchar(4) DEFAULT NULL,
+  `cc_type` varchar(20) DEFAULT NULL,
+  `amount` decimal(25,4) NOT NULL,
+  `currency` varchar(3) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `attachment` varchar(55) DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `pos_paid` decimal(25,4) DEFAULT 0.0000,
+  `pos_balance` decimal(25,4) DEFAULT 0.0000,
+  `gc_no` varchar(20) DEFAULT NULL,
+  `reference` varchar(50) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_payments` (`id`, `date`, `sale_id`, `customer_id`, `transaction_id`, `paid_by`, `cheque_no`, `cc_no`, `cc_holder`, `cc_month`, `cc_year`, `cc_type`, `amount`, `currency`, `created_by`, `attachment`, `note`, `pos_paid`, `pos_balance`, `gc_no`, `reference`, `updated_by`, `updated_at`, `store_id`) VALUES (1, '2023-04-04 21:07:20', 1, 1, NULL, 'cash', '', '', '', '', '', '', '5250.0000', NULL, 1, NULL, '', '5250.0000', '0.0000', '', NULL, NULL, NULL, 1);
+INSERT INTO `tec_payments` (`id`, `date`, `sale_id`, `customer_id`, `transaction_id`, `paid_by`, `cheque_no`, `cc_no`, `cc_holder`, `cc_month`, `cc_year`, `cc_type`, `amount`, `currency`, `created_by`, `attachment`, `note`, `pos_paid`, `pos_balance`, `gc_no`, `reference`, `updated_by`, `updated_at`, `store_id`) VALUES (2, '2023-04-04 21:11:18', 2, 1, NULL, 'cash', '', '', '', '', '', '', '5250.0000', NULL, 1, NULL, '', '5250.0000', '0.0000', '', NULL, NULL, NULL, 1);
+
+
+#
+# TABLE STRUCTURE FOR: tec_printers
+#
+
+DROP TABLE IF EXISTS `tec_printers`;
+
+CREATE TABLE `tec_printers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(55) NOT NULL,
+  `type` varchar(25) NOT NULL,
+  `profile` varchar(25) NOT NULL,
+  `char_per_line` tinyint(3) unsigned DEFAULT NULL,
+  `path` varchar(255) DEFAULT NULL,
+  `ip_address` varbinary(45) DEFAULT NULL,
+  `port` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_printers` (`id`, `title`, `type`, `profile`, `char_per_line`, `path`, `ip_address`, `port`) VALUES (1, 'XPrinter', 'network', 'default', 45, '', '192.168.1.200', '9100');
+
+
+#
+# TABLE STRUCTURE FOR: tec_product_store_qty
+#
+
+DROP TABLE IF EXISTS `tec_product_store_qty`;
+
+CREATE TABLE `tec_product_store_qty` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `store_id` int(11) NOT NULL,
+  `quantity` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  `price` decimal(25,4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_id` (`product_id`),
+  KEY `store_id` (`store_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_product_store_qty` (`id`, `product_id`, `store_id`, `quantity`, `price`) VALUES (1, 1, 1, '3.0000', '5000.0000');
+
+
+#
+# TABLE STRUCTURE FOR: tec_products
+#
+
+DROP TABLE IF EXISTS `tec_products`;
+
+CREATE TABLE `tec_products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) NOT NULL,
+  `name` char(255) NOT NULL,
+  `category_id` int(11) NOT NULL DEFAULT 1,
+  `price` decimal(25,4) NOT NULL,
+  `image` varchar(255) DEFAULT 'no_image.png',
+  `tax` varchar(20) DEFAULT NULL,
+  `cost` decimal(25,4) DEFAULT NULL,
+  `tax_method` tinyint(1) DEFAULT 1,
+  `quantity` decimal(15,4) DEFAULT 0.0000,
+  `barcode_symbology` varchar(20) NOT NULL DEFAULT 'code39',
+  `type` varchar(20) NOT NULL DEFAULT 'standard',
+  `details` text DEFAULT NULL,
+  `alert_quantity` decimal(10,4) DEFAULT 0.0000,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_products` (`id`, `code`, `name`, `category_id`, `price`, `image`, `tax`, `cost`, `tax_method`, `quantity`, `barcode_symbology`, `type`, `details`, `alert_quantity`) VALUES (1, '1222', 'mouse', 2, '5000.0000', 'no_image.png', '0', '3000.0000', 0, '0.0000', 'code128', 'standard', '', '0.0000');
+
+
+#
+# TABLE STRUCTURE FOR: tec_purchase_items
+#
+
+DROP TABLE IF EXISTS `tec_purchase_items`;
+
+CREATE TABLE `tec_purchase_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `purchase_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,4) NOT NULL,
+  `cost` decimal(25,4) NOT NULL,
+  `subtotal` decimal(25,4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_purchases
+#
+
+DROP TABLE IF EXISTS `tec_purchases`;
+
+CREATE TABLE `tec_purchases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reference` varchar(55) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `note` varchar(1000) NOT NULL,
+  `total` decimal(25,4) NOT NULL,
+  `attachment` varchar(255) DEFAULT NULL,
+  `supplier_id` int(11) DEFAULT NULL,
+  `received` tinyint(1) DEFAULT NULL,
+  `created_by` int(11) NOT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_registers
+#
+
+DROP TABLE IF EXISTS `tec_registers`;
+
+CREATE TABLE `tec_registers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `user_id` int(11) NOT NULL,
+  `cash_in_hand` decimal(25,4) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `total_cash` decimal(25,4) DEFAULT NULL,
+  `total_cheques` int(11) DEFAULT NULL,
+  `total_cc_slips` int(11) DEFAULT NULL,
+  `total_cash_submitted` decimal(25,4) DEFAULT NULL,
+  `total_cheques_submitted` int(11) DEFAULT NULL,
+  `total_cc_slips_submitted` int(11) DEFAULT NULL,
+  `note` text DEFAULT NULL,
+  `closed_at` timestamp NULL DEFAULT NULL,
+  `transfer_opened_bills` varchar(50) DEFAULT NULL,
+  `closed_by` int(11) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_registers` (`id`, `date`, `user_id`, `cash_in_hand`, `status`, `total_cash`, `total_cheques`, `total_cc_slips`, `total_cash_submitted`, `total_cheques_submitted`, `total_cc_slips_submitted`, `note`, `closed_at`, `transfer_opened_bills`, `closed_by`, `store_id`) VALUES (1, '2019-03-19 23:19:22', 1, '200.0000', 'open', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+
+
+#
+# TABLE STRUCTURE FOR: tec_sale_items
+#
+
+DROP TABLE IF EXISTS `tec_sale_items`;
+
+CREATE TABLE `tec_sale_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sale_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,4) NOT NULL,
+  `unit_price` decimal(25,4) NOT NULL,
+  `net_unit_price` decimal(25,4) NOT NULL,
+  `discount` varchar(20) DEFAULT NULL,
+  `item_discount` decimal(25,4) DEFAULT NULL,
+  `tax` int(20) DEFAULT NULL,
+  `item_tax` decimal(25,4) DEFAULT NULL,
+  `subtotal` decimal(25,4) NOT NULL,
+  `real_unit_price` decimal(25,4) DEFAULT NULL,
+  `cost` decimal(25,4) DEFAULT 0.0000,
+  `product_code` varchar(50) DEFAULT NULL,
+  `product_name` varchar(50) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_sale_items` (`id`, `sale_id`, `product_id`, `quantity`, `unit_price`, `net_unit_price`, `discount`, `item_discount`, `tax`, `item_tax`, `subtotal`, `real_unit_price`, `cost`, `product_code`, `product_name`, `comment`) VALUES (1, 1, 1, '1.0000', '5000.0000', '5000.0000', '0', '0.0000', 0, '0.0000', '5000.0000', '5000.0000', '3000.0000', '1222', 'mouse', '');
+INSERT INTO `tec_sale_items` (`id`, `sale_id`, `product_id`, `quantity`, `unit_price`, `net_unit_price`, `discount`, `item_discount`, `tax`, `item_tax`, `subtotal`, `real_unit_price`, `cost`, `product_code`, `product_name`, `comment`) VALUES (2, 2, 1, '1.0000', '5000.0000', '5000.0000', '0', '0.0000', 0, '0.0000', '5000.0000', '5000.0000', '3000.0000', '1222', 'mouse', '');
+
+
+#
+# TABLE STRUCTURE FOR: tec_sales
+#
+
+DROP TABLE IF EXISTS `tec_sales`;
+
+CREATE TABLE `tec_sales` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(55) NOT NULL,
+  `total` decimal(25,4) NOT NULL,
+  `product_discount` decimal(25,4) DEFAULT NULL,
+  `order_discount_id` varchar(20) DEFAULT NULL,
+  `order_discount` decimal(25,4) DEFAULT NULL,
+  `total_discount` decimal(25,4) DEFAULT NULL,
+  `product_tax` decimal(25,4) DEFAULT NULL,
+  `order_tax_id` varchar(20) DEFAULT NULL,
+  `order_tax` decimal(25,4) DEFAULT NULL,
+  `total_tax` decimal(25,4) DEFAULT NULL,
+  `grand_total` decimal(25,4) NOT NULL,
+  `total_items` int(11) DEFAULT NULL,
+  `total_quantity` decimal(15,4) DEFAULT NULL,
+  `paid` decimal(25,4) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `status` varchar(20) DEFAULT NULL,
+  `rounding` decimal(10,4) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  `hold_ref` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_sales` (`id`, `date`, `customer_id`, `customer_name`, `total`, `product_discount`, `order_discount_id`, `order_discount`, `total_discount`, `product_tax`, `order_tax_id`, `order_tax`, `total_tax`, `grand_total`, `total_items`, `total_quantity`, `paid`, `created_by`, `updated_by`, `updated_at`, `note`, `status`, `rounding`, `store_id`, `hold_ref`) VALUES (1, '2023-04-04 21:07:20', 1, 'Walk-in Client', '5000.0000', '0.0000', NULL, '0.0000', '0.0000', '0.0000', '5%', '250.0000', '250.0000', '5250.0000', 1, '1.0000', '5250.0000', 1, NULL, NULL, '', 'paid', '0.0000', 1, '');
+INSERT INTO `tec_sales` (`id`, `date`, `customer_id`, `customer_name`, `total`, `product_discount`, `order_discount_id`, `order_discount`, `total_discount`, `product_tax`, `order_tax_id`, `order_tax`, `total_tax`, `grand_total`, `total_items`, `total_quantity`, `paid`, `created_by`, `updated_by`, `updated_at`, `note`, `status`, `rounding`, `store_id`, `hold_ref`) VALUES (2, '2023-04-04 21:11:18', 1, 'Walk-in Client', '5000.0000', '0.0000', NULL, '0.0000', '0.0000', '0.0000', '5%', '250.0000', '250.0000', '5250.0000', 1, '1.0000', '5250.0000', 1, NULL, NULL, '', 'paid', '0.0000', 1, '');
+
+
+#
+# TABLE STRUCTURE FOR: tec_sessions
+#
+
+DROP TABLE IF EXISTS `tec_sessions`;
+
+CREATE TABLE `tec_sessions` (
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL DEFAULT 0,
+  `data` blob NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ci_sessions_timestamp` (`timestamp`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('0jsb0ccdrhc314msl4rteoi2pm34d60n', '::1', 1679284017, '__ci_last_regenerate|i:1679283979;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679254237\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('100rkepehhuk8dpskvfb7igh30kccebt', '::1', 1680634768, '__ci_last_regenerate|i:1680634768;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('24cbv2iaa2v7psk02rde1n357s79f4sc', '192.168.100.24', 1680433115, '__ci_last_regenerate|i:1680433101;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('24kmgaa6oobtnu5f4opvdq775g8cvtbk', '::1', 1679254731, '__ci_last_regenerate|i:1679254731;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1553019446\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('57vaim0048hsl93t9hkcesfj9dhjdoak', '::1', 1679319459, '__ci_last_regenerate|i:1679319459;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679283979\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('611bghflhv0ktumqdrs874a8b27nda53', '::1', 1679254961, '__ci_last_regenerate|i:1679254731;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1553019446\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('6607561a161cb0632a5f8f93f7106910d2976864', '80.23.121.114', 1553014084, '__ci_last_regenerate|i:1553013948;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1442292729\";last_ip|s:9:\"127.0.0.1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|N;has_store_id|N;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('7df7r3giejd4vdidjhhfat9ucb8k150i', '::1', 1680636102, '__ci_last_regenerate|i:1680636102;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('7jvgnj4p2l5pstqjqvbhpvfafgq8a9dv', '::1', 1679480017, '__ci_last_regenerate|i:1679479791;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679319202\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('88ibind9edrddapo9fn2faq42s9dirgi', '::1', 1679318979, '__ci_last_regenerate|i:1679318979;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('8fdaf39s68rtt5sj2u1lpovgckoeb348', '::1', 1679776914, '__ci_last_regenerate|i:1679776914;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679479795\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('aaoffkcv49nsa0koid4vbs0l0qrdavuj', '::1', 1680636501, '__ci_last_regenerate|i:1680636501;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('ci87vu2rhu9hh2tffsania7dj5pocqqk', '::1', 1680635098, '__ci_last_regenerate|i:1680635098;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('cukibcmcghru16jfvo28ae46ddvg9ao8', '::1', 1680636586, '__ci_last_regenerate|i:1680636501;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('d68ca8s392bkdtl516c3dv64crg5l0m4', '::1', 1553019446, '__ci_last_regenerate|i:1553019446;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('i6jegdv19ofd9u18opg76178h9bo8jtp', '192.168.100.24', 1679319276, '__ci_last_regenerate|i:1679319011;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('itn2fevlfnc6t1eimq8tjbspv8ejb69t', '192.168.100.30', 1679319261, '__ci_last_regenerate|i:1679319147;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('iui8nim9ia022mq0p8dooav5l45ea50e', '::1', 1679254368, '__ci_last_regenerate|i:1679254368;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1553019446\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('lbmevjha0bsqcnuiheh8g441h4cu0kva', '::1', 1679319459, '__ci_last_regenerate|i:1679319459;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679283979\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('m4t05npa7hf26ij004coeladhdtt5e52', '::1', 1680635478, '__ci_last_regenerate|i:1680635478;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('ohdbo562gbikpjnlf3rhiubf6a98nmho', '::1', 1680433118, '__ci_last_regenerate|i:1680433101;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679775045\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('qb31rkf6uvoasfqn8q4thv1hocatrovr', '::1', 1679776092, '__ci_last_regenerate|i:1679776092;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('qsm1ts59lcgcp6oiqc02kiug6bcrkqvu', '::1', 1680635797, '__ci_last_regenerate|i:1680635797;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1680433104\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|s:1:\"1\";has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('r8ajc19llludgi3eebg1fpakicrer1lb', '::1', 1679775550, '__ci_last_regenerate|i:1679775550;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679479795\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('tpap8hivdjj8hjpbs0j3cvamgf1ov706', '::1', 1679776917, '__ci_last_regenerate|i:1679776914;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1679479795\";last_ip|s:3:\"::1\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 23:19:22\";');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('uqb35353cuqu7tq92spoi1k3f16l57rs', '192.168.100.24', 1679776092, '__ci_last_regenerate|i:1679776092;');
+INSERT INTO `tec_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES ('v4r9g53e8ekebc2r5j1lqd03orbppqmb', '::1', 1553019562, '__ci_last_regenerate|i:1553019446;identity|s:18:\"admin@tecdiary.com\";username|s:5:\"admin\";email|s:18:\"admin@tecdiary.com\";user_id|s:1:\"1\";first_name|s:5:\"Admin\";last_name|s:5:\"Admin\";created_on|s:24:\"Thu 25 Jun 2015 05:59 AM\";old_last_login|s:10:\"1553014062\";last_ip|s:13:\"80.23.121.114\";avatar|N;gender|s:4:\"male\";group_id|s:1:\"1\";store_id|i:1;has_store_id|N;message|s:14:\"Welcome to POS\";__ci_vars|a:1:{s:7:\"message\";s:3:\"old\";}register_id|s:1:\"1\";cash_in_hand|s:8:\"200.0000\";register_open_time|s:19:\"2019-03-19 20:19:22\";');
+
+
+#
+# TABLE STRUCTURE FOR: tec_settings
+#
+
+DROP TABLE IF EXISTS `tec_settings`;
+
+CREATE TABLE `tec_settings` (
+  `setting_id` int(1) NOT NULL,
+  `logo` varchar(255) NOT NULL,
+  `site_name` varchar(55) NOT NULL,
+  `tel` varchar(20) NOT NULL,
+  `dateformat` varchar(20) DEFAULT NULL,
+  `timeformat` varchar(20) DEFAULT NULL,
+  `default_email` varchar(100) NOT NULL,
+  `language` varchar(20) NOT NULL,
+  `version` varchar(10) NOT NULL DEFAULT '1.0',
+  `theme` varchar(20) NOT NULL,
+  `timezone` varchar(255) NOT NULL DEFAULT '0',
+  `protocol` varchar(20) NOT NULL DEFAULT 'mail',
+  `smtp_host` varchar(255) DEFAULT NULL,
+  `smtp_user` varchar(100) DEFAULT NULL,
+  `smtp_pass` varchar(255) DEFAULT NULL,
+  `smtp_port` varchar(10) DEFAULT '25',
+  `smtp_crypto` varchar(5) DEFAULT NULL,
+  `mmode` tinyint(1) NOT NULL,
+  `captcha` tinyint(1) NOT NULL DEFAULT 1,
+  `mailpath` varchar(55) DEFAULT NULL,
+  `currency_prefix` varchar(3) NOT NULL,
+  `default_customer` int(11) NOT NULL,
+  `default_tax_rate` varchar(20) NOT NULL,
+  `rows_per_page` int(2) NOT NULL,
+  `total_rows` int(2) NOT NULL,
+  `header` varchar(1000) DEFAULT NULL,
+  `footer` varchar(1000) DEFAULT NULL,
+  `bsty` tinyint(4) NOT NULL,
+  `display_kb` tinyint(4) NOT NULL,
+  `default_category` int(11) NOT NULL,
+  `default_discount` varchar(20) NOT NULL,
+  `item_addition` tinyint(1) NOT NULL,
+  `barcode_symbology` varchar(55) DEFAULT NULL,
+  `pro_limit` tinyint(4) NOT NULL,
+  `decimals` tinyint(1) NOT NULL DEFAULT 2,
+  `thousands_sep` varchar(2) NOT NULL DEFAULT ',',
+  `decimals_sep` varchar(2) NOT NULL DEFAULT '.',
+  `focus_add_item` varchar(55) DEFAULT NULL,
+  `add_customer` varchar(55) DEFAULT NULL,
+  `toggle_category_slider` varchar(55) DEFAULT NULL,
+  `cancel_sale` varchar(55) DEFAULT NULL,
+  `suspend_sale` varchar(55) DEFAULT NULL,
+  `print_order` varchar(55) DEFAULT NULL,
+  `print_bill` varchar(55) DEFAULT NULL,
+  `finalize_sale` varchar(55) DEFAULT NULL,
+  `today_sale` varchar(55) DEFAULT NULL,
+  `open_hold_bills` varchar(55) DEFAULT NULL,
+  `close_register` varchar(55) DEFAULT NULL,
+  `java_applet` tinyint(1) NOT NULL,
+  `receipt_printer` varchar(55) DEFAULT NULL,
+  `pos_printers` varchar(255) DEFAULT NULL,
+  `cash_drawer_codes` varchar(55) DEFAULT NULL,
+  `char_per_line` tinyint(4) DEFAULT 42,
+  `rounding` tinyint(1) DEFAULT 0,
+  `pin_code` varchar(20) DEFAULT NULL,
+  `stripe` tinyint(1) DEFAULT NULL,
+  `stripe_secret_key` varchar(100) DEFAULT NULL,
+  `stripe_publishable_key` varchar(100) DEFAULT NULL,
+  `purchase_code` varchar(100) DEFAULT NULL,
+  `envato_username` varchar(50) DEFAULT NULL,
+  `theme_style` varchar(25) DEFAULT 'green',
+  `after_sale_page` tinyint(1) DEFAULT NULL,
+  `overselling` tinyint(1) DEFAULT 1,
+  `multi_store` tinyint(1) DEFAULT NULL,
+  `qty_decimals` tinyint(1) DEFAULT 2,
+  `symbol` varchar(55) DEFAULT NULL,
+  `sac` tinyint(1) DEFAULT 0,
+  `display_symbol` tinyint(1) DEFAULT NULL,
+  `remote_printing` tinyint(1) DEFAULT 1,
+  `printer` int(11) DEFAULT NULL,
+  `order_printers` varchar(55) DEFAULT NULL,
+  `auto_print` tinyint(1) DEFAULT 0,
+  `local_printers` tinyint(1) DEFAULT NULL,
+  `rtl` tinyint(1) DEFAULT NULL,
+  `print_img` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`setting_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_settings` (`setting_id`, `logo`, `site_name`, `tel`, `dateformat`, `timeformat`, `default_email`, `language`, `version`, `theme`, `timezone`, `protocol`, `smtp_host`, `smtp_user`, `smtp_pass`, `smtp_port`, `smtp_crypto`, `mmode`, `captcha`, `mailpath`, `currency_prefix`, `default_customer`, `default_tax_rate`, `rows_per_page`, `total_rows`, `header`, `footer`, `bsty`, `display_kb`, `default_category`, `default_discount`, `item_addition`, `barcode_symbology`, `pro_limit`, `decimals`, `thousands_sep`, `decimals_sep`, `focus_add_item`, `add_customer`, `toggle_category_slider`, `cancel_sale`, `suspend_sale`, `print_order`, `print_bill`, `finalize_sale`, `today_sale`, `open_hold_bills`, `close_register`, `java_applet`, `receipt_printer`, `pos_printers`, `cash_drawer_codes`, `char_per_line`, `rounding`, `pin_code`, `stripe`, `stripe_secret_key`, `stripe_publishable_key`, `purchase_code`, `envato_username`, `theme_style`, `after_sale_page`, `overselling`, `multi_store`, `qty_decimals`, `symbol`, `sac`, `display_symbol`, `remote_printing`, `printer`, `order_printers`, `auto_print`, `local_printers`, `rtl`, `print_img`) VALUES (1, 'logo1.png', 'SimplePOS', '0105292122', 'D j M Y', 'h:i A', 'noreply@spos.tecdiary.my', 'english', '4.0.28', 'default', 'Asia/Kuala_Lumpur', 'mail', 'pop.gmail.com', 'noreply@spos.tecdiary.my', '', '25', '', 0, 0, NULL, 'USD', 3, '5%', 10, 30, '<h2><strong>Simple POS</strong></h2>\r\n       My Shop Lot, Shopping Mall,<br>\r\n                                                                                              Post Code, City<br>', 'Thank you for your business!\r\n<br>', 3, 0, 1, '0', 1, '', 10, 2, ',', '.', 'ALT+F1', 'ALT+F2', 'ALT+F10', 'ALT+F5', 'ALT+F6', 'ALT+F11', 'ALT+F12', 'ALT+F8', 'Ctrl+F1', 'Ctrl+F2', 'ALT+F7', 0, '', '', '', 42, 1, '2122', 1, '', '', '', '', 'green', NULL, 1, NULL, 2, NULL, 0, NULL, 1, 1, NULL, 0, NULL, NULL, NULL);
+
+
+#
+# TABLE STRUCTURE FOR: tec_stores
+#
+
+DROP TABLE IF EXISTS `tec_stores`;
+
+CREATE TABLE `tec_stores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `code` varchar(20) NOT NULL,
+  `logo` varchar(40) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) NOT NULL,
+  `address1` varchar(50) DEFAULT NULL,
+  `address2` varchar(50) DEFAULT NULL,
+  `city` varchar(20) DEFAULT NULL,
+  `state` varchar(20) DEFAULT NULL,
+  `postal_code` varchar(8) DEFAULT NULL,
+  `country` varchar(25) DEFAULT NULL,
+  `currency_code` varchar(3) DEFAULT NULL,
+  `receipt_header` text DEFAULT NULL,
+  `receipt_footer` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_stores` (`id`, `name`, `code`, `logo`, `email`, `phone`, `address1`, `address2`, `city`, `state`, `postal_code`, `country`, `currency_code`, `receipt_header`, `receipt_footer`) VALUES (1, 'SimplePOS', 'POS', 'logo.png', 'store@tecdiary.com', '012345678', 'Address Line 1', '', 'Petaling Jaya', 'Selangor', '46000', 'Malaysia', 'MYR', NULL, 'This is receipt footer for store');
+
+
+#
+# TABLE STRUCTURE FOR: tec_suppliers
+#
+
+DROP TABLE IF EXISTS `tec_suppliers`;
+
+CREATE TABLE `tec_suppliers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(55) NOT NULL,
+  `cf1` varchar(255) NOT NULL,
+  `cf2` varchar(255) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_suppliers` (`id`, `name`, `cf1`, `cf2`, `phone`, `email`) VALUES (1, 'Test Supplier', '1', '2', '0123456789', 'supplier@tecdairy.com');
+
+
+#
+# TABLE STRUCTURE FOR: tec_suspended_items
+#
+
+DROP TABLE IF EXISTS `tec_suspended_items`;
+
+CREATE TABLE `tec_suspended_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `suspend_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` decimal(15,4) NOT NULL,
+  `unit_price` decimal(25,4) NOT NULL,
+  `net_unit_price` decimal(25,4) NOT NULL,
+  `discount` varchar(20) DEFAULT NULL,
+  `item_discount` decimal(25,4) DEFAULT NULL,
+  `tax` int(20) DEFAULT NULL,
+  `item_tax` decimal(25,4) DEFAULT NULL,
+  `subtotal` decimal(25,4) NOT NULL,
+  `real_unit_price` decimal(25,4) DEFAULT NULL,
+  `product_code` varchar(50) DEFAULT NULL,
+  `product_name` varchar(50) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_suspended_sales
+#
+
+DROP TABLE IF EXISTS `tec_suspended_sales`;
+
+CREATE TABLE `tec_suspended_sales` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `customer_name` varchar(55) NOT NULL,
+  `total` decimal(25,4) NOT NULL,
+  `product_discount` decimal(25,4) DEFAULT NULL,
+  `order_discount_id` varchar(20) DEFAULT NULL,
+  `order_discount` decimal(25,4) DEFAULT NULL,
+  `total_discount` decimal(25,4) DEFAULT NULL,
+  `product_tax` decimal(25,4) DEFAULT NULL,
+  `order_tax_id` varchar(20) DEFAULT NULL,
+  `order_tax` decimal(25,4) DEFAULT NULL,
+  `total_tax` decimal(25,4) DEFAULT NULL,
+  `grand_total` decimal(25,4) NOT NULL,
+  `total_items` int(11) DEFAULT NULL,
+  `total_quantity` decimal(15,4) DEFAULT NULL,
+  `paid` decimal(25,4) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `note` varchar(1000) DEFAULT NULL,
+  `hold_ref` varchar(255) DEFAULT NULL,
+  `store_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+#
+# TABLE STRUCTURE FOR: tec_user_logins
+#
+
+DROP TABLE IF EXISTS `tec_user_logins`;
+
+CREATE TABLE `tec_user_logins` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `ip_address` varbinary(16) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `time` timestamp NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (1, 1, NULL, '80.23.121.114', 'admin@tecdiary.com', '2019-03-19 21:47:42');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (2, 1, NULL, '::1', 'admin@tecdiary.com', '2019-03-19 23:17:26');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (3, 1, NULL, '::1', 'Admin@tecdiary.com', '2023-03-20 00:30:37');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (4, 1, NULL, '::1', 'Admin@tecdiary.com', '2023-03-20 18:33:22');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (5, 1, NULL, '::1', 'Admin@tecdiary.com', '2023-03-22 15:09:55');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (6, 1, NULL, '::1', 'admin@tecdiary.com', '2023-03-26 01:10:45');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (7, 1, NULL, '::1', 'admin@tecdiary.com', '2023-04-02 15:58:24');
+INSERT INTO `tec_user_logins` (`id`, `user_id`, `company_id`, `ip_address`, `login`, `time`) VALUES (8, 1, NULL, '::1', 'admin@tecdiary.com', '2023-04-04 23:35:14');
+
+
+#
+# TABLE STRUCTURE FOR: tec_users
+#
+
+DROP TABLE IF EXISTS `tec_users`;
+
+CREATE TABLE `tec_users` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `last_ip_address` varbinary(45) DEFAULT NULL,
+  `ip_address` varbinary(45) DEFAULT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `salt` varchar(40) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `avatar` varchar(55) DEFAULT NULL,
+  `gender` varchar(20) DEFAULT NULL,
+  `group_id` int(11) unsigned NOT NULL DEFAULT 2,
+  `store_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+INSERT INTO `tec_users` (`id`, `last_ip_address`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`, `avatar`, `gender`, `group_id`, `store_id`) VALUES (1, '::1', '127.0.0.1', 'admin', 'fe941d48eb1fbce34b4588ae500861570fb0e398', NULL, 'admin@tecdiary.com', NULL, NULL, NULL, 'b2d2c8fd5d9a5f19901279ac74cec92dc15ac970', 1435204774, 1680633314, 1, 'Admin', 'Admin', 'Tecdiary', '012345678', NULL, 'male', 1, NULL);
+
+
